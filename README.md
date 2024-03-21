@@ -30,3 +30,6 @@ Certainly! Let's go through the best technology options for each aspect of your 
    - Firebase Realtime Database: Firebase Realtime Database is a cloud-hosted NoSQL database that provides real-time syncing and offline support for Android apps, making it suitable for storing user data and chat history in your app.
 
 By selecting these technologies for each aspect of your project, you can build a robust, efficient, and user-friendly Android AI chatbot that delivers an exceptional conversational experience to users.
+
+
+Hello My name is Divyanshu...
