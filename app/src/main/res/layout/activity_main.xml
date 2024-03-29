@@ -23,7 +23,7 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="70dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -45,165 +45,37 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/nav_logo" />
 
-                    <ImageView
-                        android:id="@+id/imageView2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/aditya"
                         android:layout_marginEnd="16dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/avatar" />
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.appcompat.widget.Toolbar>
 
-            <ScrollView
+            <androidx.fragment.app.FragmentContainerView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:orientation="horizontal"
+                android:id="@+id/fragment"
+                android:layout_marginBottom="3dp"
+                android:name="com.example.aichathub.DashboardFragment"
                 app:layout_constraintBottom_toTopOf="@+id/bottomNavi"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/textView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:fontFamily="@font/poppins_bold"
-                        android:text="Hello"
-                        android:textColor="@color/black"
-                        android:textSize="36sp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textView2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="-20dp"
-                        android:fontFamily="@font/poppins_bold"
-                        android:text="Hey User!"
-                        android:textColor="@color/black"
-                        android:textSize="36sp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="@+id/textView"
-                        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/cardView"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="16dp"
-                        app:cardBackgroundColor="@color/purple_dark"
-                        app:cardCornerRadius="25dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView2">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                            <ImageView
-                                android:id="@+id/imageView3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="10dp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/chatbot_logo_avatar" />
-
-                            <TextView
-                                android:id="@+id/textView3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="25dp"
-                                android:layout_marginTop="25dp"
-                                android:fontFamily="@font/poppins_bold"
-                                android:text="It's AI CHATHUB!"
-                                android:textColor="@color/white"
-                                android:textSize="20sp"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <TextView
-                                android:id="@+id/textView4"
-                                android:layout_width="169dp"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/poppins"
-                                android:justificationMode="inter_word"
-                                android:text="I'm here to chat with you, Ask me anything or just say Hello to get started!"
-                                android:textColor="@color/cream_white"
-                                android:textSize="12sp"
-                                app:layout_constraintStart_toStartOf="@+id/textView3"
-                                app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-                            <androidx.appcompat.widget.AppCompatButton
-                                android:id="@+id/learn_more_btn"
-                                android:layout_width="88dp"
-                                android:layout_height="30dp"
-                                android:layout_marginTop="24dp"
-                                android:background="@drawable/white_btn_bg"
-                                android:text="learn more"
-                                android:textAllCaps="false"
-                                android:textSize="12sp"
-                                app:layout_constraintStart_toStartOf="@+id/textView4"
-                                app:layout_constraintTop_toBottomOf="@+id/textView4" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </androidx.cardview.widget.CardView>
-
-                    <TextView
-                        android:id="@+id/previous_chat_id"
-                        android:layout_width="150dp"
-                        android:layout_height="37dp"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginTop="20dp"
-                        android:background="@drawable/purple_btn_bg"
-                        android:fontFamily="@font/poppins"
-                        android:gravity="center"
-                        android:text="Previous chats"
-                        android:textColor="@color/white"
-                        android:textSize="17sp"
-                        app:layout_constraintStart_toStartOf="@+id/cardView"
-                        app:layout_constraintTop_toBottomOf="@+id/cardView" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/previous_chat_id" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </ScrollView>
+                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
 
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottomNavi"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="70dp"
                 app:menu="@menu/bottom_menu"
-                android:defaultFocusHighlightEnabled="false"
-                app:labelVisibilityMode="unlabeled"
-                android:background="@color/white"
+                android:background="@color/grey"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
