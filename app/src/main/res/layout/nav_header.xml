@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="300dp"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/white">
 
     <ImageView
@@ -191,52 +191,64 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
-    <ImageView
-        android:id="@+id/user_image"
-        android:layout_width="49dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="16dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintVertical_bias="1"
+        android:layout_marginTop="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider"
-        app:layout_constraintVertical_bias="0.8"
-        app:srcCompat="@drawable/avatar" />
-
-    <TextView
-        android:id="@+id/username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:fontFamily="@font/poppins_medium"
-        android:text="username"
-        android:textColor="@color/purple_dark"
-        android:textSize="14dp"
-        app:layout_constraintStart_toEndOf="@+id/user_image"
-        app:layout_constraintTop_toTopOf="@+id/user_image" />
-
-    <TextView
-        android:id="@+id/user_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_medium"
-        android:text="Username@gmail.com"
-        android:textColor="@color/purple_dark"
-        android:textSize="14dp"
-        app:layout_constraintStart_toStartOf="@+id/username"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/edit_profile_btn"
-        android:layout_width="154dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/purple_bg_holder"
-        android:fontFamily="@font/poppins_medium"
-        android:gravity="center"
-        android:text="Edit Profile"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_email" />
+        app:layout_constraintTop_toBottomOf="@+id/divider">
+
+        <ImageView
+            android:id="@+id/user_image"
+            android:layout_width="49dp"
+            android:layout_height="49dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/edit_profile_btn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/avatar" />
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="username"
+            android:textColor="@color/purple_dark"
+            android:textSize="14dp"
+            app:layout_constraintStart_toEndOf="@+id/user_image"
+            app:layout_constraintTop_toTopOf="@+id/user_image" />
+
+        <TextView
+            android:id="@+id/user_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Username@gmail.com"
+            android:textColor="@color/purple_dark"
+            android:textSize="14dp"
+            app:layout_constraintStart_toStartOf="@+id/username"
+            app:layout_constraintTop_toBottomOf="@+id/username" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/edit_profile_btn"
+            android:layout_width="154dp"
+            android:layout_height="35dp"
+            android:background="@drawable/purple_bg_holder"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"
+            android:text="Edit Profile"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
