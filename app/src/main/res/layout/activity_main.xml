@@ -46,12 +46,49 @@
                         app:srcCompat="@drawable/nav_logo" />
 
                     <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/circleProfile_image"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:src="@drawable/aditya"
                         android:layout_marginEnd="16dp"
+                        android:src="@drawable/avatar"
+                        android:visibility="visible"
+                        android:layout_marginTop="10dp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/topActivity_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="16dp"
+                        android:fontFamily="@font/poppins"
+                        android:gravity="bottom"
+                        android:visibility="gone"
+                        android:text="Edit Profile"
+                        android:textColor="#2B0D46"
+                        android:textSize="28sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/header2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:text="Dashboard"
+                        android:visibility="visible"
+                        android:fontFamily="@font/poppins"
+                        android:textColor="@color/black"
+                        android:textSize="25dp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="15dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -70,7 +107,8 @@
 
 
 
-            <com.google.android.material.bottomnavigation.BottomNavigationView
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:orientation="horizontal"
                 android:id="@+id/bottomNavi"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
@@ -78,7 +116,51 @@
                 android:background="@color/grey"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent" >
+
+                <ImageView
+                    android:id="@+id/dashboard"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:padding="8dp"
+                    android:tint="@color/white"
+                    android:background="@drawable/bottom_selection_bg"
+                    android:src="@drawable/ic_dashboard_black_24dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/profile"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/profile"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:padding="9dp"
+                    android:src="@drawable/user_pen_24"
+                    android:tint="@color/purple_dark"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/feedback"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:padding="9dp"
+                    android:tint="@color/purple_dark"
+                    android:src="@drawable/feedback_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/profile"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </FrameLayout>

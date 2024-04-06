@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/purple_dark"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".profileFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_design2"
+            app:layout_constraintBottom_toTopOf="@+id/view3" />
+
+
+        <ImageView
+            android:id="@+id/view3"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:src="@drawable/custom_design"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/profile_image"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_image"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            android:src="@drawable/avatar"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="7dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/edit_profile_image"
+            android:layout_width="77dp"
+            android:layout_height="70dp"
+            android:src="@drawable/pen"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="3dp"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+            app:layout_constraintEnd_toEndOf="@+id/profile_image" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/purple_dark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view3">
+
+            <TextView
+                android:id="@+id/user_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_light"
+                android:text="@string/defaultUserId"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/user_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-5dp"
+                android:fontFamily="@font/poppins_light"
+                android:text="@string/user_mail"
+                android:textColor="@color/grey"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@+id/user_id"
+                app:layout_constraintStart_toStartOf="@+id/user_id"
+                app:layout_constraintTop_toBottomOf="@+id/user_id" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/user_email">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:text=" Name:"
+                    android:textColor="@color/grey"
+                    android:textSize="17sp"
+                    tools:ignore="HardcodedText"
+                    tools:layout_editor_absoluteX="44dp"
+                    tools:layout_editor_absoluteY="407dp" />
+
+                <EditText
+                    android:id="@+id/username"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="-10dp"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:fontFamily="@font/poppins_light"
+                    android:hint="@string/defaultUserName"
+                    android:inputType="text"
+                    android:text=""
+                    android:textColor="@color/grey"
+                    android:textColorHint="#4D4C4C"
+                    tools:layout_editor_absoluteX="10dp"
+                    tools:layout_editor_absoluteY="451dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/poppins"
+                    android:text=" Email:"
+                    android:textColor="@color/grey"
+                    android:textSize="17sp"
+                    tools:ignore="HardcodedText"
+                    tools:layout_editor_absoluteX="44dp"
+                    tools:layout_editor_absoluteY="407dp" />
+
+                <EditText
+                    android:id="@+id/et_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="-10dp"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:fontFamily="@font/poppins_light"
+                    android:hint="@string/user_mail"
+                    android:inputType="textEmailAddress"
+                    android:text=""
+                    android:textColor="@color/grey"
+                    tools:ignore="DuplicateSpeakableTextCheck"
+                    tools:layout_editor_absoluteX="10dp"
+                    tools:layout_editor_absoluteY="451dp" />
+
+
+                <!--            <TextView-->
+                <!--                android:layout_width="wrap_content"-->
+                <!--                android:layout_height="wrap_content"-->
+                <!--                android:fontFamily="@font/poppins"-->
+                <!--                android:textSize="17sp"-->
+                <!--                android:text=" UserId:"-->
+                <!--                android:layout_marginTop="10dp"-->
+                <!--                android:textColor="@color/black"-->
+                <!--                tools:layout_editor_absoluteX="44dp"-->
+                <!--                tools:layout_editor_absoluteY="407dp"-->
+                <!--                tools:ignore="HardcodedText" />-->
+
+                <!--            <EditText-->
+                <!--                android:id="@+id/userId"-->
+                <!--                android:layout_width="match_parent"-->
+                <!--                android:layout_height="48dp"-->
+                <!--                android:layout_marginTop="-10dp"-->
+                <!--                android:ems="10"-->
+                <!--                android:fontFamily="@font/poppins_light"-->
+                <!--                android:hint="@string/defaultUserId"-->
+                <!--                android:inputType="text"-->
+                <!--                android:text=""-->
+                <!--                android:textColor="@color/black"-->
+                <!--                android:textColorHint="@color/grey"-->
+                <!--                tools:ignore="DuplicateSpeakableTextCheck"-->
+                <!--                tools:layout_editor_absoluteX="10dp"-->
+                <!--                tools:layout_editor_absoluteY="451dp"-->
+                <!--                android:autofillHints="" />-->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/poppins"
+                    android:text=" Gender:"
+                    android:textColor="@color/grey"
+                    android:textSize="17sp"
+                    tools:ignore="HardcodedText"
+                    tools:layout_editor_absoluteX="44dp"
+                    tools:layout_editor_absoluteY="407dp" />
+
+                <RadioGroup
+                    android:id="@+id/radio_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <RadioButton
+                        android:id="@+id/radio_male"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins"
+                        android:saveEnabled="true"
+                        android:text="Male"
+                        android:textColor="@color/grey"
+                        android:textIsSelectable="true" />
+
+                    <RadioButton
+                        android:id="@+id/radio_female"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins"
+                        android:text="Female"
+                        android:textColor="@color/grey"
+                        app:useMaterialThemeColors="true" />
+
+                    <RadioButton
+                        android:id="@+id/radio_other"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins"
+                        android:text="Other"
+                        android:textColor="@color/grey" />
+                </RadioGroup>
+
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/update_btn"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/update_bg"
+                android:fontFamily="@font/poppins"
+                android:text="@string/update_btn"
+                android:textAllCaps="false"
+                android:textColor="@color/purple_dark"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
