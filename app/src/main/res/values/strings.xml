@@ -25,4 +25,18 @@
     <string name="title_notifications">Notifications</string>
     <string name="profile">Profile</string>
     <string name="feedback_title">Feedback</string>
+    <string name="title_profile">Profile</string>
+    <string name="defaultUserId">user123</string>
+    <string name="user_mail">mail@gmail.com</string>
+    <string name="update_btn">Update</string>
+    <string name="defaultUserName" />
+
+    <array name="feedback_array">
+        <item>suggestion</item>
+        <item>suggestion</item>
+        <item>suggestion</item>
+        <item>suggestion</item>
+        <item>suggestion</item>
+        <item>suggestion</item>
+    </array>
 </resources>

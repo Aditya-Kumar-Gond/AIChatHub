@@ -27,7 +27,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView4">
 
         <LinearLayout
-            android:id="@+id/home"
+            android:id="@+id/home_header"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginStart="16dp"
@@ -58,7 +58,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/setting"
+            android:id="@+id/setting_header"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginStart="16dp"
@@ -88,7 +88,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/refer"
+            android:id="@+id/refer_header"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginStart="16dp"
@@ -118,7 +118,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/support"
+            android:id="@+id/support_header"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginStart="16dp"
@@ -148,7 +148,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/logout"
+            android:id="@+id/logout_header"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginStart="16dp"
@@ -202,17 +202,17 @@
         app:layout_constraintTop_toBottomOf="@+id/divider">
 
         <ImageView
-            android:id="@+id/user_image"
+            android:id="@+id/user_image_header"
             android:layout_width="49dp"
             android:layout_height="49dp"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/edit_profile_btn"
+            app:layout_constraintBottom_toTopOf="@+id/edit_profile_btn_header"
             app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@drawable/avatar" />
 
         <TextView
-            android:id="@+id/username"
+            android:id="@+id/username_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -220,22 +220,22 @@
             android:text="username"
             android:textColor="@color/purple_dark"
             android:textSize="14dp"
-            app:layout_constraintStart_toEndOf="@+id/user_image"
-            app:layout_constraintTop_toTopOf="@+id/user_image" />
+            app:layout_constraintStart_toEndOf="@+id/user_image_header"
+            app:layout_constraintTop_toTopOf="@+id/user_image_header" />
 
         <TextView
-            android:id="@+id/user_email"
+            android:id="@+id/user_email_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
             android:text="Username@gmail.com"
             android:textColor="@color/purple_dark"
             android:textSize="14dp"
-            app:layout_constraintStart_toStartOf="@+id/username"
-            app:layout_constraintTop_toBottomOf="@+id/username" />
+            app:layout_constraintStart_toStartOf="@+id/username_header"
+            app:layout_constraintTop_toBottomOf="@+id/username_header" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/edit_profile_btn"
+            android:id="@+id/edit_profile_btn_header"
             android:layout_width="154dp"
             android:layout_height="35dp"
             android:background="@drawable/purple_bg_holder"
