@@ -59,41 +59,42 @@
                 android:layout_weight="1">
 
                 <Spinner
+                    android:id="@+id/type_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:entries="@array/feedback_array"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginEnd="18dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="22dp"
                     android:saveEnabled="true"
-                    android:visibility="invisible"
+                    android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/spinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins"
-                    android:text="Suggestion"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:enabled="false"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+<!--                <TextView-->
+<!--                    android:id="@+id/spinner"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:fontFamily="@font/poppins"-->
+<!--                    android:text="Suggestion"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textSize="16sp"-->
+<!--                    android:enabled="false"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent" />-->
 
-                <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_marginStart="6dp"
-                    android:src="@drawable/down_arrow_icon"
-                    android:saveEnabled="false"
-                    app:layout_constraintBottom_toBottomOf="@+id/spinner"
-                    app:layout_constraintStart_toEndOf="@+id/spinner"
-                    app:layout_constraintTop_toTopOf="@+id/spinner" />
+<!--                <ImageView-->
+<!--                    android:layout_width="12dp"-->
+<!--                    android:layout_height="12dp"-->
+<!--                    android:layout_marginStart="6dp"-->
+<!--                    android:src="@drawable/down_arrow_icon"-->
+<!--                    android:saveEnabled="false"-->
+<!--                    app:layout_constraintBottom_toBottomOf="@+id/spinner"-->
+<!--                    app:layout_constraintStart_toEndOf="@+id/spinner"-->
+<!--                    app:layout_constraintTop_toTopOf="@+id/spinner" />-->
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -132,7 +133,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView7">
 
             <EditText
-                android:id="@+id/editTextText"
+                android:id="@+id/textBox"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/grey"
@@ -141,6 +142,7 @@
                 android:fontFamily="@font/poppins"
                 android:hint="Type message here.."
                 android:textColorHint="#ACACAC"
+                android:textColor="@color/purple_dark"
                 android:inputType="textMultiLine"
                 android:padding="18dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -150,7 +152,7 @@
 
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button"
+            android:id="@+id/send_button"
             android:background="@drawable/purple_bg_holder"
             android:layout_width="match_parent"
             android:layout_margin="16dp"
