@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="300dp"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@color/white">
 
     <ImageView
@@ -51,7 +51,7 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/poppins_medium"
-                android:text="Home"
+                android:text="Dashboard"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 
@@ -68,7 +68,7 @@
             <ImageView
                 android:id="@+id/setting_icon"
                 android:layout_width="20dp"
-                android:layout_height="420dp"
+                android:layout_height="20dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="10dp"
                 android:src="@drawable/setting_icon"
@@ -131,17 +131,17 @@
                 android:layout_height="20dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="10dp"
-                android:src="@drawable/phone_icon"
+                android:src="@drawable/feedback_icon"
                 app:tint="#2B0D46" />
 
             <TextView
-                android:id="@+id/phone_text"
+                android:id="@+id/feedback_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/poppins_medium"
-                android:text="Support"
+                android:text="Give Feedback"
                 android:textColor="#2B0D46"
                 android:textSize="16sp" />
 

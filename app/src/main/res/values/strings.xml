@@ -32,11 +32,9 @@
     <string name="defaultUserName" />
 
     <array name="feedback_array">
-        <item>suggestion</item>
-        <item>suggestion</item>
-        <item>suggestion</item>
-        <item>suggestion</item>
-        <item>suggestion</item>
-        <item>suggestion</item>
+        <item>Suggestion</item>
+        <item>Help</item>
+        <item>Complaint</item>
+        <item>Other</item>
     </array>
 </resources>
