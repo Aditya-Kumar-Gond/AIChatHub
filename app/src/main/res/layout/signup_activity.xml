@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_bg"
-    tools:context=".LoginActivityActivity">
+    tools:context=".SignUpActivity">
 
     <TextView
         android:id="@+id/logo"
@@ -42,16 +42,16 @@
         app:layout_constraintTop_toBottomOf="@+id/logo" />
 
     <EditText
-        android:id="@+id/Username"
+        android:id="@+id/age"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginStart="36dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="36dp"
-        android:background="@drawable/un_et_bg"
+        android:background="@drawable/age_su_bg"
         android:fontFamily="@font/poppins"
         android:gravity="center|start"
-        android:hint="Enter User name or Email-ID"
+        android:hint="Enter your age"
         android:paddingStart="20dp"
         android:paddingTop="10dp"
         android:textColor="@color/white"
@@ -81,7 +81,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Username" />
+        app:layout_constraintTop_toBottomOf="@+id/age" />
 
     <EditText
         android:id="@+id/Password"
@@ -133,12 +133,11 @@
         app:layout_constraintStart_toStartOf="@+id/button1"
         app:layout_constraintTop_toBottomOf="@+id/button1" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <TextView
         android:id="@+id/button2"
         android:layout_width="150dp"
-        android:layout_height="27dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="208dp"
-        android:background="@drawable/white_btn_bg"
         android:text="Log In"
         android:textAllCaps="false"
         android:textColor="@color/purple_dark"
