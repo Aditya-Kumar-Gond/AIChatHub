@@ -14,7 +14,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="120dp"
             android:background="@drawable/custom_design2"
             app:layout_constraintBottom_toTopOf="@+id/view3" />
 
@@ -50,7 +50,6 @@
             android:layout_height="70dp"
             android:src="@drawable/pen"
             app:civ_border_color="@color/white"
-            app:civ_border_width="3dp"
             app:layout_constraintBottom_toBottomOf="@+id/profile_image"
             app:layout_constraintEnd_toEndOf="@+id/profile_image" />
 
@@ -71,6 +70,7 @@
                 android:text="@string/defaultUserId"
                 android:textColor="@color/white"
                 android:textSize="20sp"
+                android:visibility="gone"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -80,9 +80,9 @@
                 android:id="@+id/user_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-5dp"
                 android:fontFamily="@font/poppins_light"
                 android:text="@string/user_mail"
+                android:layout_marginTop="5dp"
                 android:textColor="@color/grey"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="@+id/user_id"
@@ -92,7 +92,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -109,31 +110,17 @@
                     tools:layout_editor_absoluteX="44dp"
                     tools:layout_editor_absoluteY="407dp" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/username"
+                <EditText
+                    android:id="@+id/full_name"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_marginTop="-10dp"
-                    android:autofillHints=""
-                    android:ems="10"
-                    android:hint="Name"
-                    android:textColorHint="@color/white"
-                    app:boxStrokeWidth="2dp"
-                    app:boxStrokeColor="@color/white"
-                    tools:layout_editor_absoluteX="10dp"
-                    tools:layout_editor_absoluteY="451dp" >
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/poppins_light"
+                    android:inputType="textNoSuggestions"
+                    android:text=""
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:fontFamily="@font/poppins_light"
-                        android:layout_gravity="center"
-                        android:inputType="text"
-                        android:text=""
-                        android:textColor="@color/grey"
-                        android:textColorHint="#4D4C4C"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:textColor="@color/grey"
+                    android:textColorHint="#4D4C4C" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -164,34 +151,33 @@
                     tools:layout_editor_absoluteY="451dp" />
 
 
-                <!--            <TextView-->
-                <!--                android:layout_width="wrap_content"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                android:fontFamily="@font/poppins"-->
-                <!--                android:textSize="17sp"-->
-                <!--                android:text=" UserId:"-->
-                <!--                android:layout_marginTop="10dp"-->
-                <!--                android:textColor="@color/black"-->
-                <!--                tools:layout_editor_absoluteX="44dp"-->
-                <!--                tools:layout_editor_absoluteY="407dp"-->
-                <!--                tools:ignore="HardcodedText" />-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/poppins"
+                    android:text=" Age:"
+                    android:textColor="@color/white"
+                    android:textSize="17sp"
+                    tools:ignore="HardcodedText"
+                    tools:layout_editor_absoluteX="44dp"
+                    tools:layout_editor_absoluteY="407dp" />
 
-                <!--            <EditText-->
-                <!--                android:id="@+id/userId"-->
-                <!--                android:layout_width="match_parent"-->
-                <!--                android:layout_height="48dp"-->
-                <!--                android:layout_marginTop="-10dp"-->
-                <!--                android:ems="10"-->
-                <!--                android:fontFamily="@font/poppins_light"-->
-                <!--                android:hint="@string/defaultUserId"-->
-                <!--                android:inputType="text"-->
-                <!--                android:text=""-->
-                <!--                android:textColor="@color/black"-->
-                <!--                android:textColorHint="@color/grey"-->
-                <!--                tools:ignore="DuplicateSpeakableTextCheck"-->
-                <!--                tools:layout_editor_absoluteX="10dp"-->
-                <!--                tools:layout_editor_absoluteY="451dp"-->
-                <!--                android:autofillHints="" />-->
+                <EditText
+                    android:id="@+id/age"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="-10dp"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:fontFamily="@font/poppins_light"
+                    android:inputType="number"
+                    android:text=""
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/grey"
+                    tools:ignore="DuplicateSpeakableTextCheck"
+                    tools:layout_editor_absoluteX="10dp"
+                    tools:layout_editor_absoluteY="451dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
