@@ -1,7 +1,9 @@
 package com.example.aichathub;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -13,11 +15,27 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 
 public class FeedbackFragment extends Fragment {
     Spinner spinner;
     EditText text;
     Button send_btn;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference ref = database.getReference().child("users_feedback");
+    FirebaseAuth auth = FirebaseAuth.getInstance();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -35,14 +53,37 @@ public class FeedbackFragment extends Fragment {
                 String txt_msg = text.getText().toString();
                 if(txt_msg.isEmpty()){
                     Toast.makeText(getContext(), "Please write something", Toast.LENGTH_SHORT).show();
-                    text.setError("Cannot be empty!");
                 }else {
-                    Toast.makeText(getContext(), "type: "+selected_type+"\n"+"msg: "+txt_msg, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), "type: "+selected_type+"\n"+"msg: "+txt_msg, Toast.LENGTH_SHORT).show();
                     Log.i("onSend", "type: "+selected_type+"\n"+"msg: "+txt_msg);
+                    uploadMsg(selected_type,txt_msg);
                 }
             }
         });
         return v;
+    }
+
+    private void uploadMsg(String selectedType, String txtMsg) {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        String formattedDate = dateFormat.format(calendar.getTime());
+       // Toast.makeText(getContext(), "Date: " + formattedDate, Toast.LENGTH_SHORT).show();
+        ProgressDialog pd = new ProgressDialog(getContext());
+        pd.setMessage("Sending...");
+        pd.show();
+        ref.child(formattedDate).child(selectedType).child(auth.getCurrentUser().getUid()).setValue(txtMsg).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    Toast.makeText(getContext(), "Thank you", Toast.LENGTH_SHORT).show();
+                    pd.dismiss();
+                    text.setText(null);
+                }else {
+                    Toast.makeText(getContext(), "something went wrong", Toast.LENGTH_SHORT).show();
+                    pd.dismiss();
+                }
+            }
+        });
     }
 
 }
