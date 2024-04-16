@@ -57,6 +57,7 @@
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         android:textSize="14sp"
+        android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,6 +75,7 @@
         android:gravity="center|start"
         android:hint="Enter Your Email-ID"
         android:paddingStart="20dp"
+        android:inputType="textEmailAddress"
         android:paddingTop="10dp"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
@@ -84,7 +86,7 @@
         app:layout_constraintTop_toBottomOf="@+id/age" />
 
     <EditText
-        android:id="@+id/Password"
+        android:id="@+id/pwd"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginStart="36dp"
@@ -119,7 +121,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Password" />
+        app:layout_constraintTop_toBottomOf="@+id/pwd" />
 
     <TextView
         android:id="@+id/textView11"
@@ -134,7 +136,7 @@
         app:layout_constraintTop_toBottomOf="@+id/button1" />
 
     <TextView
-        android:id="@+id/button2"
+        android:id="@+id/toLogin"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="208dp"

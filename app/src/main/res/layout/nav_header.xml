@@ -201,7 +201,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_image_header"
             android:layout_width="49dp"
             android:layout_height="49dp"
@@ -209,7 +209,7 @@
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/edit_profile_btn_header"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/avatar" />
+            android:src="@drawable/avatar" />
 
         <TextView
             android:id="@+id/username_header"
