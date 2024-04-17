@@ -1,5 +1,6 @@
 package com.example.aichathub;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 
@@ -12,7 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -78,6 +81,19 @@ public class FeedbackFragment extends Fragment {
                     Toast.makeText(getContext(), "Thank you", Toast.LENGTH_SHORT).show();
                     pd.dismiss();
                     text.setText(null);
+                        Dialog dialog = new Dialog(getContext());
+                        dialog.setContentView(R.layout.custom_dialog_success);
+                        dialog.show();
+
+                        TextView dialog_txt =dialog.findViewById(R.id.dialog_text);
+                        TextView dialog_txt2 =dialog.findViewById(R.id.dialog_text2);
+                        ImageView dialog_close = dialog.findViewById(R.id.CloseDialog);
+                        Button dialog_btn = dialog.findViewById(R.id.dialog_button1);
+
+                        dialog_txt2.setText("Feedback sent!");
+                        dialog_txt.setText("It's means a lot Thank You");
+                        dialog_close.setOnClickListener(v1 -> dialog.dismiss());
+                        dialog_btn.setVisibility(View.GONE);
                 }else {
                     Toast.makeText(getContext(), "something went wrong", Toast.LENGTH_SHORT).show();
                     pd.dismiss();
