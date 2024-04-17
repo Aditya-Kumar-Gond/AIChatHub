@@ -1,6 +1,9 @@
 package com.example.aichathub;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -31,6 +34,7 @@ public class DashboardFragment extends Fragment {
     TextView username;
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users_detail");
+    SharedPreferences preferences;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,7 +43,8 @@ public class DashboardFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         rv = view.findViewById(R.id.rv);
         username = view.findViewById(R.id.textView2);
-        fetchData();
+
+        username.setText(DatabaseClass.user_fullname);
         DataAdapter adapter = new DataAdapter();
       //  StaggeredGridLayoutManager manager2 = new StaggeredGridLayoutManager(view.getContext(),)
         GridLayoutManager manager = new GridLayoutManager(view.getContext(),2);

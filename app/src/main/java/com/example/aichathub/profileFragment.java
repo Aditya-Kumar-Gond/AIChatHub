@@ -1,9 +1,14 @@
 package com.example.aichathub;
 
+import static android.content.Context.MODE_PRIVATE;
+import static android.os.Build.VERSION_CODES.M;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -48,18 +54,52 @@ RadioButton male_btn,female_btn,other_btn;
 FirebaseDatabase database = FirebaseDatabase.getInstance();
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageReference = storage.getReference().child("users_profile_image");
-
-    View view;
+View view;
 DatabaseReference ref = database.getReference().child("users_detail");
 FirebaseAuth auth = FirebaseAuth.getInstance();
 CircleImageView edit_profile_img,profile_img;
+    SharedPreferences preferences;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.fragment_profile, container, false);
         hooks();
-        fetchData();
 
+        preferences = getContext().getSharedPreferences("user_data",MODE_PRIVATE);
+
+        String data = preferences.getString("image_uri",null);
+        if(data == null){
+            fetchData();
+        }else{
+            name.setText(DatabaseClass.user_fullname);
+            name_tv.setText(DatabaseClass.user_fullname);
+            age.setText(DatabaseClass.user_age);
+            email.setText(DatabaseClass.user_email);
+            email_tv.setText(DatabaseClass.user_email);
+            Picasso.get().load(DatabaseClass.user_profile_image).into(profile_img, new Callback() {
+                @Override
+                public void onSuccess() {
+            //        Toast.makeText(getContext(), "fetched_image", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    e.printStackTrace();
+                    Log.i("image fetch error", "onError: "+e.toString());
+                    Toast.makeText(getContext(), "failed to fetch data", Toast.LENGTH_SHORT).show();
+                }
+            });
+            if(DatabaseClass.user_gender!=null){
+                if(DatabaseClass.user_gender.equals("male")){
+                    male_btn.toggle();
+                }else if (DatabaseClass.user_gender.equals("female")){
+                    female_btn.toggle();
+                }else {
+                    other_btn.toggle();
+                }
+            }
+        }
         update_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,6 +142,7 @@ CircleImageView edit_profile_img,profile_img;
             data.put("Gender",gender);
             data.put("Email",email_txt);
 
+            String finalGender = gender;
             ref.child(auth.getCurrentUser().getUid()).setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
@@ -109,6 +150,18 @@ CircleImageView edit_profile_img,profile_img;
                         Toast.makeText(getContext(), "Updated", Toast.LENGTH_SHORT).show();
                         fetchData();
                         dialog.dismiss();
+
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("user_name",fullname);
+                        editor.putString("user_age",age_txt);
+                        editor.putString("user_email",email_txt);
+                        editor.putString("user_gender", finalGender);
+                        editor.apply();
+
+                        DatabaseClass.user_fullname = fullname;
+                        DatabaseClass.user_age = age_txt;
+                        DatabaseClass.user_email = email_txt;
+                        DatabaseClass.user_gender = finalGender;
                        // Navigation.findNavController(getContext(),R.id.mobile_navigation).navigate(R.id.action_navigation_profile_to_navigation_dashboard);
                     }else {
                         dialog.dismiss();
@@ -207,6 +260,11 @@ CircleImageView edit_profile_img,profile_img;
                 if (task.isSuccessful()){
                     dialog.dismiss();
                     Toast.makeText(getContext(), "Uploaded", Toast.LENGTH_SHORT).show();
+                    DatabaseClass.user_profile_image = image_uri;
+                    String image  = String.valueOf(image_uri);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("image_uri",image);
+                    editor.apply();
                 }else {
                     dialog.dismiss();
                     Toast.makeText(getContext(), "Failed to upload", Toast.LENGTH_SHORT).show();

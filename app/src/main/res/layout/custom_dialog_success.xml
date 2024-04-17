@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="378dp"
+    app:cardCornerRadius="20dp"
+
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/CloseDialog"
+            android:layout_width="34dp"
+            android:layout_height="39dp"
+            android:layout_gravity="right"
+            android:layout_marginStart="22dp"
+            android:layout_marginEnd="18dp"
+            android:clickable="true"
+            android:layout_marginTop="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/close_icon"
+            tools:ignore="KeyboardInaccessibleWidget,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+        <ImageView
+            android:id="@+id/done_image"
+            android:layout_width="149dp"
+            android:layout_height="107dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="-20dp"
+            android:layout_marginEnd="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/check_icon"
+            tools:ignore="KeyboardInaccessibleWidget,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+        <TextView
+            android:id="@+id/dialog_text2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginEnd="28dp"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:text="Please Check You mail!"
+            android:textSize="19sp"
+            tools:ignore="TextSizeCheck" />
+
+        <TextView
+            android:id="@+id/dialog_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:layout_marginStart="28dp"
+            android:layout_marginEnd="28dp"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/black"
+            android:text="We have sent an verification mail"
+            android:textSize="19sp"
+            tools:ignore="TextSizeCheck" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/dialog_button1"
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@color/purple_dark"
+            android:layout_marginStart="28dp"
+            android:layout_marginEnd="28dp"
+            android:text="Okay"
+            android:textAllCaps="false"
+            android:fontFamily="@font/poppins"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_text"
+            tools:layout_editor_absoluteX="0dp" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
