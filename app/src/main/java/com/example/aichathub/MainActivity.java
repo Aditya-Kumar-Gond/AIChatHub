@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,6 +23,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,7 +48,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -68,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
     StorageReference storageReference = storage.getReference().child("users_profile_image");
 
     SharedPreferences preferences;
+    String TAG = "MainActivity";
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -86,12 +92,21 @@ public class MainActivity extends AppCompatActivity {
         txt_header_feedback = findViewById(R.id.header2);
 
         navigationHeader(navi);
-        fetchData();
+
         preferences = getSharedPreferences("user_data",MODE_PRIVATE);
 
         navigation_icon.setOnClickListener(v->{
             drawerLayout.openDrawer(GravityCompat.START);
         });
+
+        String data = preferences.getString("user_name",null);
+
+        if(data == null) {
+            fetchData();
+            Toast.makeText(this, "fecthing", Toast.LENGTH_SHORT).show();
+        } else {
+            setUsernameAndEmailFromPreferences();
+        }
 
         profile_bottom_icon.setOnClickListener(v->{
             profileFragment fragment = new profileFragment();
@@ -100,13 +115,13 @@ public class MainActivity extends AppCompatActivity {
             profile_img_toolbar.setVisibility(View.GONE);
             txt_header.setVisibility(View.VISIBLE);
             txt_header_feedback.setVisibility(View.GONE);
+            setBottomIconAppearanceBehaviour();
             profile_bottom_icon.setBackground(getDrawable(R.drawable.bottom_selection_bg));
-            dashBoard_bottom_icon.setBackground(null);
-            feedback_bottom_icon.setBackground(null);
             profile_bottom_icon.setColorFilter(getResources().getColor(R.color.white));
-            dashBoard_bottom_icon.setColorFilter(getResources().getColor(R.color.purple_dark));
-            feedback_bottom_icon.setColorFilter(getResources().getColor(R.color.purple_dark));
-         //   toolbar.setBackground(getDrawable(R.drawable.custom_design));
+            setAppearanceOfHolder();
+            setting.setBackground(getDrawable(R.drawable.purple_bg_holder));
+            setting_icon.setColorFilter(WHITE);
+            setting_tv.setTextColor(WHITE);
         });
 
         dashBoard_bottom_icon.setOnClickListener(v -> {
@@ -119,12 +134,13 @@ public class MainActivity extends AppCompatActivity {
             txt_header_feedback.setVisibility(View.VISIBLE);
             txt_header_feedback.setText("Dashboard");
             //     toolbar.setBackground(getDrawable(R.color.white));
+            setBottomIconAppearanceBehaviour();
             dashBoard_bottom_icon.setBackground(getDrawable(R.drawable.bottom_selection_bg));
-            profile_bottom_icon.setBackground(null);
-            feedback_bottom_icon.setBackground(null);
             dashBoard_bottom_icon.setColorFilter(getResources().getColor(R.color.white));
-            profile_bottom_icon.setColorFilter(getResources().getColor(R.color.purple_dark));
-            feedback_bottom_icon.setColorFilter(getResources().getColor(R.color.purple_dark));
+            setAppearanceOfHolder();
+            home.setBackground(getDrawable(R.drawable.purple_bg_holder));
+            home_icon.setColorFilter(WHITE);
+            home_tv.setTextColor(WHITE);
         });
 
         feedback_bottom_icon.setOnClickListener(v -> {
@@ -137,17 +153,142 @@ public class MainActivity extends AppCompatActivity {
             txt_header.setVisibility(View.GONE);
             txt_header_feedback.setVisibility(View.VISIBLE);
             txt_header_feedback.setText("Feedback");
-            //     toolbar.setBackground(getDrawable(R.color.white));
+            setBottomIconAppearanceBehaviour();
             feedback_bottom_icon.setBackground(getDrawable(R.drawable.bottom_selection_bg));
-            dashBoard_bottom_icon.setBackground(null);
-            profile_bottom_icon.setBackground(null);
             feedback_bottom_icon.setColorFilter(getResources().getColor(R.color.white));
-            dashBoard_bottom_icon.setColorFilter(getResources().getColor(R.color.purple_dark));
-            profile_bottom_icon.setColorFilter(getResources().getColor(R.color.purple_dark));
+            setAppearanceOfHolder();
+            feedback.setBackground(getDrawable(R.drawable.purple_bg_holder));
+            feedback_icon.setColorFilter(WHITE);
+            feedback_tv.setTextColor(WHITE);
         });
     }
 
+    private void setBottomIconAppearanceBehaviour() {
+        dashBoard_bottom_icon.setBackground(null);
+        profile_bottom_icon.setBackground(null);
+        feedback_bottom_icon.setBackground(null);
+        dashBoard_bottom_icon.setColorFilter(getResources().getColor(R.color.purple_dark));
+        profile_bottom_icon.setColorFilter(getResources().getColor(R.color.purple_dark));
+        feedback_bottom_icon.setColorFilter(getResources().getColor(R.color.purple_dark));
+    }
 
+
+    private void fetchData() {
+        ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setMessage("Fetching data...");
+        dialog.show();
+        String uid = auth.getUid();
+        assert uid != null;
+        ref.child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    saveUserDataToPreferences(snapshot);
+                    setUsernameAndEmailFromSnapshot(snapshot);
+                    getProfileImage(dialog);
+                }
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                dialog.dismiss();
+                Toast.makeText(MainActivity.this, "Failed to fetch data", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getProfileImage(ProgressDialog dialog) {
+        storageReference.child(auth.getCurrentUser().getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                image_uri = uri;
+                DatabaseClass.user_profile_image = uri;
+                //storing
+                SharedPreferences.Editor editor= preferences.edit();
+                editor.putString("image_uri", String.valueOf(uri));
+                editor.apply();
+                //setting
+                Picasso.get().load(uri).into(profile_img_toolbar);
+                Picasso.get().load(image_uri).into(profile_img_header);
+                dialog.dismiss();
+            }
+        }).addOnFailureListener(e -> {
+            dialog.dismiss();
+            Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+        });
+    }
+    private void setUsernameAndEmailFromPreferences() {
+        username.setText(preferences.getString("user_name", null));
+        email.setText(preferences.getString("user_email", null));
+        String uriString = preferences.getString("image_uri", null);
+     //   Toast.makeText(this, "uri exist:"+uriString, Toast.LENGTH_SHORT).show();
+        DatabaseClass.user_age = preferences.getString("user_age",null);
+        DatabaseClass.user_email = preferences.getString("user_email",null);
+        DatabaseClass.user_fullname = preferences.getString("user_name",null);
+        DatabaseClass.user_gender = preferences.getString("user_gender",null);
+        if (uriString != null) {
+            Uri imageUri = Uri.parse(uriString);
+            image_uri = imageUri;
+            DatabaseClass.user_profile_image = image_uri;
+            ProgressDialog dialog = new ProgressDialog(this);
+            dialog.setMessage("loading...");
+            dialog.show();
+            Picasso.get().load(imageUri).into(profile_img_toolbar, new Callback() {
+                @Override
+                public void onSuccess() {
+                    dialog.dismiss();
+                    Log.i(TAG, "onSuccess: image set");
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    dialog.dismiss();
+                    Toast.makeText(MainActivity.this, "something went wrong", Toast.LENGTH_SHORT).show();
+                }
+            });
+            Picasso.get().load(imageUri).into(profile_img_header);
+        }else {
+            Log.i("mainActivity", "uri is null");
+            DatabaseClass.user_profile_image = null;
+        }
+    }
+
+    private void saveUserDataToPreferences(DataSnapshot snapshot) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("user_name", snapshot.child("Full_name").getValue(String.class));
+        editor.putString("user_age", snapshot.child("Age").getValue(String.class));
+        editor.putString("user_email", snapshot.child("Email").getValue(String.class));
+        editor.putString("user_gender", snapshot.child("Gender").getValue(String.class));
+        editor.apply();
+        DatabaseClass.user_age = snapshot.child("Age").getValue(String.class);
+        DatabaseClass.user_email = snapshot.child("Email").getValue(String.class);
+        DatabaseClass.user_fullname = snapshot.child("Full_name").getValue(String.class);
+        DatabaseClass.user_gender = snapshot.child("Gender").getValue(String.class);
+    }
+
+    private void setUsernameAndEmailFromSnapshot(DataSnapshot snapshot) {
+        username.setText(snapshot.child("Full_name").getValue(String.class));
+        email.setText(snapshot.child("Email").getValue(String.class));
+    }
+    private void setAppearanceOfHolder() {
+        home.setBackground(null);
+        setting.setBackground(null);
+        refer.setBackground(null);
+        feedback.setBackground(null);
+        logout.setBackground(null);
+
+        home_tv.setTextColor(Color.BLACK);
+        setting_tv.setTextColor(Color.BLACK);
+        refer_tv.setTextColor(Color.BLACK);
+        feedback_tv.setTextColor(Color.BLACK);
+
+        home_icon.setColorFilter(Color.BLACK);
+        setting_icon.setColorFilter(Color.BLACK);
+        refer_icon.setColorFilter(Color.BLACK);
+        refer_icon.setColorFilter(Color.BLACK);
+        feedback_icon.setColorFilter(BLACK);
+    }
     @SuppressLint("UseCompatLoadingForDrawables")
     private void navigationHeader(ViewGroup viewGroup) {
 
@@ -200,6 +341,9 @@ public class MainActivity extends AppCompatActivity {
         logout.setOnClickListener(v->{
             auth.signOut();
             startActivity(new Intent(this,LoginActivityActivity.class));
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.apply();
             Toast.makeText(MainActivity.this,"logout",Toast.LENGTH_SHORT).show();
         });
 
@@ -244,63 +388,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private void fetchData() {
-        ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setMessage("Fetching data...");
-        dialog.show();
-        String uid = auth.getUid();
-        assert uid != null;
-        ref.child(uid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    String name_txt = snapshot.child("Full_name").getValue(String.class);
-                    String age_txt = snapshot.child("Age").getValue(String.class);
-                    String email_txt = snapshot.child("Email").getValue(String.class);
-                    String gender_txt = snapshot.child("Gender").getValue(String.class);
-
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("user_name",name_txt);
-                    editor.putString("user_age",age_txt);
-                    editor.putString("user_email",email_txt);
-                    editor.putString("user_gender",gender_txt);
-                    editor.apply();
-
-                    username.setText(name_txt);
-                    email.setText(email_txt);
-             //       email_nav.setText(email_txt);
-
-                    storageReference.child(auth.getCurrentUser().getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            image_uri = uri;
-                            String image  = String.valueOf(uri);
-                            editor.putString("image_uri",image);
-                            editor.apply();
-                            Picasso.get().load(uri).into(profile_img_toolbar);
-                            Picasso.get().load(image_uri).into(profile_img_header);
-                            dialog.dismiss();
-                        }
-                    }).addOnFailureListener(e -> {
-                        dialog.dismiss();
-                        Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-                    });
-                }else {
-                    dialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                dialog.dismiss();
-                Toast.makeText(MainActivity.this, "failed to Fetch data", Toast.LENGTH_SHORT).show();
-            }
-        });
-        dialog.dismiss();
-    }
-
-
-
 
     boolean doubleBackToExitPressedOnce = false;
     @Override
@@ -321,23 +408,4 @@ public class MainActivity extends AppCompatActivity {
         }, 2000);
     }
 
-
-    private void setAppearanceOfHolder() {
-        home.setBackground(null);
-        setting.setBackground(null);
-        refer.setBackground(null);
-        feedback.setBackground(null);
-        logout.setBackground(null);
-
-        home_tv.setTextColor(Color.BLACK);
-        setting_tv.setTextColor(Color.BLACK);
-        refer_tv.setTextColor(Color.BLACK);
-        feedback_tv.setTextColor(Color.BLACK);
-
-        home_icon.setColorFilter(Color.BLACK);
-        setting_icon.setColorFilter(Color.BLACK);
-        refer_icon.setColorFilter(Color.BLACK);
-        refer_icon.setColorFilter(Color.BLACK);
-        feedback_icon.setColorFilter(BLACK);
-    }
 }
