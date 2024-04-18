@@ -6,8 +6,11 @@ import static android.os.Build.VERSION_CODES.M;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +41,10 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -59,7 +66,7 @@ DatabaseReference ref = database.getReference().child("users_detail");
 FirebaseAuth auth = FirebaseAuth.getInstance();
 CircleImageView edit_profile_img,profile_img;
     SharedPreferences preferences;
-
+    String encoded_image;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -68,7 +75,7 @@ CircleImageView edit_profile_img,profile_img;
 
         preferences = getContext().getSharedPreferences("user_data",MODE_PRIVATE);
 
-        String data = preferences.getString("image_uri",null);
+        String data = DatabaseClass.user_profile_image_encoded;
         if(data == null){
             fetchData();
         }else{
@@ -77,19 +84,14 @@ CircleImageView edit_profile_img,profile_img;
             age.setText(DatabaseClass.user_age);
             email.setText(DatabaseClass.user_email);
             email_tv.setText(DatabaseClass.user_email);
-            Picasso.get().load(DatabaseClass.user_profile_image).into(profile_img, new Callback() {
-                @Override
-                public void onSuccess() {
-            //        Toast.makeText(getContext(), "fetched_image", Toast.LENGTH_SHORT).show();
-                }
+            Log.i("on Profile", "Data=\n"+"fullname:"+DatabaseClass.user_fullname+"\nAge:"+DatabaseClass.user_age+"\nEmail:"+DatabaseClass.user_email+"\nImageUri:"+DatabaseClass.user_profile_image);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                byte[] image_byte = Base64.getDecoder().decode(data);
+                encoded_image = data;
+                Bitmap bitmap = BitmapFactory.decodeByteArray(image_byte,0,image_byte.length);
+                profile_img.setImageBitmap(bitmap);
+            }
 
-                @Override
-                public void onError(Exception e) {
-                    e.printStackTrace();
-                    Log.i("image fetch error", "onError: "+e.toString());
-                    Toast.makeText(getContext(), "failed to fetch data", Toast.LENGTH_SHORT).show();
-                }
-            });
             if(DatabaseClass.user_gender!=null){
                 if(DatabaseClass.user_gender.equals("male")){
                     male_btn.toggle();
@@ -148,7 +150,7 @@ CircleImageView edit_profile_img,profile_img;
                 public void onComplete(@NonNull Task<Void> task) {
                     if(task.isSuccessful()){
                         Toast.makeText(getContext(), "Updated", Toast.LENGTH_SHORT).show();
-                        fetchData();
+                       // fetchData();
                         dialog.dismiss();
 
                         SharedPreferences.Editor editor = preferences.edit();
@@ -162,6 +164,7 @@ CircleImageView edit_profile_img,profile_img;
                         DatabaseClass.user_age = age_txt;
                         DatabaseClass.user_email = email_txt;
                         DatabaseClass.user_gender = finalGender;
+
                        // Navigation.findNavController(getContext(),R.id.mobile_navigation).navigate(R.id.action_navigation_profile_to_navigation_dashboard);
                     }else {
                         dialog.dismiss();
@@ -216,16 +219,21 @@ CircleImageView edit_profile_img,profile_img;
                             other_btn.toggle();
                         }
                     }
-
+                    //while uploading
                     storageReference.child(auth.getCurrentUser().getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
                             image_uri = uri;
+                            DatabaseClass.user_profile_image = uri;
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putString("image_uri", String.valueOf(uri));
+                            editor.apply();
                             Picasso.get().load(uri).into(profile_img);
                             dialog.dismiss();
                         }
                     }).addOnFailureListener(e -> {
                         dialog.dismiss();
+                        profile_img.setImageDrawable(getResources().getDrawable(R.drawable.avatar));
                         Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
                     });
                 }
@@ -244,32 +252,47 @@ CircleImageView edit_profile_img,profile_img;
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==100 && resultCode == getActivity().RESULT_OK){
           //  Toast.makeText(getContext(), "worked", Toast.LENGTH_SHORT).show();
+            assert data != null;
             image_uri = data.getData();
-            uploadImage();
-            profile_img.setImageURI(image_uri);
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.
+                        getBitmap(getContext().getContentResolver(),image_uri);
+                profile_img.setImageBitmap(bitmap);
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+                byte[] bytesArray = byteArrayOutputStream.toByteArray();
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    encoded_image = Base64.getEncoder().encodeToString(bytesArray);
+                }
+
+                uploadImage(image_uri);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+
         }
     }
 
-    private void uploadImage() {
+    private void uploadImage(Uri uri) {
         ProgressDialog dialog = new ProgressDialog(getContext());
         dialog.setMessage("uploading...");
         dialog.show();
-         storageReference.child(Objects.requireNonNull(auth.getCurrentUser()).getUid()).putFile(image_uri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                if (task.isSuccessful()){
-                    dialog.dismiss();
-                    Toast.makeText(getContext(), "Uploaded", Toast.LENGTH_SHORT).show();
-                    DatabaseClass.user_profile_image = image_uri;
-                    String image  = String.valueOf(image_uri);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("image_uri",image);
-                    editor.apply();
-                }else {
-                    dialog.dismiss();
-                    Toast.makeText(getContext(), "Failed to upload", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+         storageReference.child(Objects.requireNonNull(auth.getCurrentUser()).getUid()).putFile(image_uri)
+                 .addOnCompleteListener(task -> {
+                     if (task.isSuccessful()){
+                         dialog.dismiss();
+                         Toast.makeText(getContext(), "Uploaded", Toast.LENGTH_SHORT).show();
+                         DatabaseClass.user_profile_image = uri;
+                         DatabaseClass.user_profile_image_encoded = encoded_image;
+                         SharedPreferences.Editor editor = preferences.edit();
+                         editor.putString("image_uri",uri.toString());
+                         editor.putString("image_encoded",encoded_image);
+                         editor.apply();
+                     }else {
+                         dialog.dismiss();
+                         Toast.makeText(getContext(), "Failed to upload", Toast.LENGTH_SHORT).show();
+                     }
+                 });
     }
 }

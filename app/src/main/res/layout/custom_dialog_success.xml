@@ -5,11 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="378dp"
     app:cardCornerRadius="20dp"
-
+    android:background="@color/white"
+    app:cardBackgroundColor="@color/white"
     android:layout_height="wrap_content"
     android:layout_gravity="center">
 
     <LinearLayout
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="wrap_content"
