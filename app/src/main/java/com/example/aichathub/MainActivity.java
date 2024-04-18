@@ -18,11 +18,14 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -40,6 +43,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -51,6 +55,9 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Base64;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -74,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
     SharedPreferences preferences;
     String TAG = "MainActivity";
+    private String encoded_image = null;
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -204,17 +212,34 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess(Uri uri) {
                 image_uri = uri;
                 DatabaseClass.user_profile_image = uri;
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.
+                            getBitmap(getContentResolver(),image_uri);
+                    profile_img_header.setImageBitmap(bitmap);
+                    profile_img_toolbar.setImageBitmap(bitmap);
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+                    byte[] bytesArray = byteArrayOutputStream.toByteArray();
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        encoded_image = Base64.getEncoder().encodeToString(bytesArray);
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
                 //storing
                 SharedPreferences.Editor editor= preferences.edit();
                 editor.putString("image_uri", String.valueOf(uri));
+                editor.putString("image_encoded", encoded_image);
+                DatabaseClass.user_profile_image_encoded = encoded_image;
                 editor.apply();
                 //setting
-                Picasso.get().load(uri).into(profile_img_toolbar);
-                Picasso.get().load(image_uri).into(profile_img_header);
+
                 dialog.dismiss();
             }
         }).addOnFailureListener(e -> {
             dialog.dismiss();
+            Snackbar.make(this.getCurrentFocus(),"somthing went wrong",Snackbar.LENGTH_SHORT).show();
             Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
         });
     }
@@ -222,32 +247,43 @@ public class MainActivity extends AppCompatActivity {
         username.setText(preferences.getString("user_name", null));
         email.setText(preferences.getString("user_email", null));
         String uriString = preferences.getString("image_uri", null);
+        String encoded_image = preferences.getString("image_encoded", null);
      //   Toast.makeText(this, "uri exist:"+uriString, Toast.LENGTH_SHORT).show();
         DatabaseClass.user_age = preferences.getString("user_age",null);
         DatabaseClass.user_email = preferences.getString("user_email",null);
         DatabaseClass.user_fullname = preferences.getString("user_name",null);
         DatabaseClass.user_gender = preferences.getString("user_gender",null);
-        if (uriString != null) {
+        if (encoded_image != null) {
             Uri imageUri = Uri.parse(uriString);
             image_uri = imageUri;
-            DatabaseClass.user_profile_image = image_uri;
-            ProgressDialog dialog = new ProgressDialog(this);
-            dialog.setMessage("loading...");
-            dialog.show();
-            Picasso.get().load(imageUri).into(profile_img_toolbar, new Callback() {
-                @Override
-                public void onSuccess() {
-                    dialog.dismiss();
-                    Log.i(TAG, "onSuccess: image set");
-                }
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                byte[] image_byte = Base64.getDecoder().decode(encoded_image);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(image_byte,0,image_byte.length);
+                profile_img_toolbar.setImageBitmap(bitmap);
+                profile_img_header.setImageBitmap(bitmap);
+            }
 
-                @Override
-                public void onError(Exception e) {
-                    dialog.dismiss();
-                    Toast.makeText(MainActivity.this, "something went wrong", Toast.LENGTH_SHORT).show();
-                }
-            });
-            Picasso.get().load(imageUri).into(profile_img_header);
+
+            DatabaseClass.user_profile_image = image_uri;
+            DatabaseClass.user_profile_image_encoded = encoded_image;
+//            ProgressDialog dialog = new ProgressDialog(this);
+//            dialog.setMessage("loading...");
+//            dialog.show();
+//            Picasso.get().load(imageUri).into(profile_img_toolbar, new Callback() {
+//                @Override
+//                public void onSuccess() {
+//                    dialog.dismiss();
+//                    Log.i(TAG, "onSuccess: image set");
+//                }
+//
+//                @Override
+//                public void onError(Exception e) {
+//                    dialog.dismiss();
+//                    Log.e(TAG, "onError: ",e);
+//                    profile_img_toolbar.setImageDrawable(getDrawable(R.drawable.avatar));
+//                    Toast.makeText(MainActivity.this, "something went wrong on picaso", Toast.LENGTH_SHORT).show();
+//                }
+//            });
         }else {
             Log.i("mainActivity", "uri is null");
             DatabaseClass.user_profile_image = null;

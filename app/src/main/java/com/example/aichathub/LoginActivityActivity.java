@@ -16,6 +16,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivityActivity extends AppCompatActivity {
 EditText email,pwd;
@@ -23,6 +25,8 @@ Button login_btn;
 TextView forget_pwd,register;
 FirebaseAuth auth = FirebaseAuth.getInstance();
 CardView google_login,fb_login,x_login;
+FirebaseDatabase database = FirebaseDatabase.getInstance();
+DatabaseReference ref = database.getReference().child("users_detail");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,8 +71,18 @@ CardView google_login,fb_login,x_login;
             public void onSuccess(AuthResult authResult) {
                 dialog.dismiss();
                 finish();
-                startActivity(new Intent(LoginActivityActivity.this,MainActivity.class));
-                Toast.makeText(LoginActivityActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
+                ref.child(authResult.getUser().getUid()).child("Password").setValue(password).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(LoginActivityActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(LoginActivityActivity.this,MainActivity.class));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(LoginActivityActivity.this, "something went wrong", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

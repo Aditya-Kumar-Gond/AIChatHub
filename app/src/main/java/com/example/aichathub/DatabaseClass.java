@@ -8,5 +8,6 @@ public class DatabaseClass {
     public static String user_age;
     public static String user_gender;
     public static Uri user_profile_image;
+    public static String user_profile_image_encoded;
 
 }
